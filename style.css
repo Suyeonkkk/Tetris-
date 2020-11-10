@@ -1,0 +1,28 @@
+/* 테트리스의 모든 스타일을 정리한 css */
+
+* {
+  font-family: "Press Start 2p", cursive;
+  background-color: #ffffff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 320px 200px;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.game-board {
+  border: solid 2px;
+}
+
+.play-button {
+  background: #4caf50;
+  font-size: 16px;
+  padding: 15px 30px;
+  cursor: pointer;
+}
