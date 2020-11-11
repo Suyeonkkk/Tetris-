@@ -19,6 +19,9 @@ class Board {
   // 새로운 게임이 시작되면 getEmptyBoard() 함수를 이용하여 초기화를 진행한다.
   reset() {
     this.grid = this.getEmptyBoard();
+    this.piece = new Piece(this.ctx);
+    this.piece.setStartingPosition();
+    this.getNewPiece();
   }
 
   // 테트리스 판을 초기화하는 함수이며, 0으로 채워진 행렬을 얻는다.
@@ -28,6 +31,60 @@ class Board {
     );
   }
 
+  // 새로운 조각을 얻는 함수
+  getNewPiece() {
+    const { width, height } = this.ctxNext.canvas;
+    this.next = new Piece(this.ctxNext);
+    this.ctxNext.clearRect(0, 0, width, height);
+    this.next.draw();
+  }
+  
+  // piece를 그리는 함수
+  draw() {
+    this.piece.draw();
+    this.drawBoard();
+  }
+
+  // x와 y의 값에 맞게 맞는 색과 함께 그린다.
+  drawBoard() {
+    this.grid.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value > 0) {
+          this.ctx.fillStyle = COLORS[value];
+          this.ctx.fillRect(x, y, 1, 1);
+        }
+      });
+    });
+  }
+
+  // piece를 떨어뜨리는 함수
+  drop() {
+
+    // piece의 key down이 올바르면 move
+    let p = moves[KEY.DOWN](this.piece);
+    if (this.valid(p)) {
+      this.piece.move(p);
+    } 
+    
+    // 올바르지 않으면 freeze, clear할수있는지 check
+    else {
+      this.freeze();
+      this.clearLines();
+      if (this.piece.y === 0) {
+        // 게임 오버
+        return false;
+      }
+
+      // 다음 piece를 준비
+      this.piece = this.next;
+      this.piece.ctx = this.ctx;
+      this.piece.setStartingPosition();
+      this.getNewPiece();
+    }
+    return true;
+  }
+
+  // piece가 있는 자리에 value를 저장하며 값을 고정시킨다.
   freeze() {
     this.piece.shape.forEach((row, y) => {
       row.forEach((value, x) => {
@@ -36,6 +93,29 @@ class Board {
         }
       });
     });
+  }
+  
+  // 행의 모든 값이 0이 아닌 경우 clear하는 함수.
+  clearLines() {
+    let lines = 0;
+
+    this.grid.forEach((row, y) => {
+      // 행의 모든 값이 0이 아닌 경우에는 line ++
+      if (row.every((value) => value > 0)) {
+        lines++;
+
+        // 그 행을 삭제
+        this.grid.splice(y, 1);
+
+        // shift와 함께 0으로 채운다. 위쪽을 비게 만든다.
+        this.grid.unshift(Array(COLS).fill(0));
+      }
+    });
+
+    if (lines > 0) {
+      // 클리어 된 line이 1개 이상인 경우 
+
+    }
   }
 
   // 입력이 타당한지 안한지 판단하는 함수
@@ -50,7 +130,7 @@ class Board {
     });
   }
 
-  // 값이 비어있는지 확인하는 함수
+  // 값이 비어있는지 확인하는 함수, 0 은 아무 조각도 없기 때문에
   isEmpty(value) {
     return value === 0;
   }

@@ -7,31 +7,17 @@ class Piece {
     this.spawn();
   }
 
-  // 보드의 위치를 변경하기 위하여 x, y의 속성 값을 변경할 수 있어야 한다.
-  move(p) {
-    if (! this.hardDropped) {
-      this.x = p.x;
-      this.y = p.y;
-    }
-    this.shape = p.shape;
-  }
-
   spawn() {
-    // 색상
-    this.color = "red";
-
-    // 모양
-    this.shape = [
-      [2, 0, 0],
-      [2, 2, 2],
-      [0, 0, 0]
-    ];
+    // 랜덤 할당 후 색상, 모양 지정
+    this.typeId = Math.floor(Math.random() * (COLORS.length - 1)) + 1;
+    this.color = COLORS[this.typeId];
+    this.shape = SHAPES[this.typeId];
 
     // 시작점
-    this.x = 3;
+    this.x = this.typeId === 4 ? 4 : 3;
     this.y = 0;
 
-    // 하드 드롭
+    // 하드 드롭 = false
     this.hardDropped = false;
   }
 
@@ -50,7 +36,22 @@ class Piece {
     });
   }
 
+  // 보드의 위치를 변경하기 위하여 x, y의 속성 값을 변경할 수 있어야 한다.
+  move(p) {
+    if (! this.hardDropped) {
+      this.x = p.x;
+      this.y = p.y;
+    }
+    this.shape = p.shape;
+  }
+
+  // 하드 드롭 = true
   hardDrop() {
     this.hardDropped = true;
+  }
+
+  // 시작 지점 set
+  setStartingPosition() {
+    this.x = this.typeId === 4 ? 4 : 3;
   }
 }

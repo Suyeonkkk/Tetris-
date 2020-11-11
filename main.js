@@ -7,6 +7,11 @@ const ctx = canvas.getContext("2d");
 const canvasNext = document.getElementById("next");
 const ctxNext = canvasNext.getContext("2d");
 
+time = { start: 0, elapsed: 0, level: 1000 };
+
+// 보드를 새롭게 선언한다.
+let board = new Board(ctx, ctxNext);
+
 // play 버튼을 눌렀을 때 실행되는 함수이다.
 function play() {
 
@@ -18,6 +23,33 @@ function play() {
   piece.draw();
 
   board.piece = piece;
+
+  animate();
+}
+
+function animate(now = 0) {
+  
+  // 지난 시간 업데이트
+  time.elapsed = now - time.start;
+
+  // 지난 시간이 현재 레벨의 시간을 초과하는지 확인
+  if (time.elapsed > time.level) {
+
+    // 현재 시간 다시 측정
+    time.start = now;
+
+    // drop() 할 수 없다면 종료
+    if (!board.drop()) {
+      
+      return;
+    }
+  }
+
+  // 새로운 상태로 그리기 전에 보드를 지운다.
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+  board.draw();
+  requestId = requestAnimationFrame(animate);
 }
 
 // KEY를 입력하였을 때 좌표 변경을 담당한다.
@@ -28,9 +60,6 @@ moves = {
   [KEY.DOWN]:   p => ({ ...p, y: p.y + 1 }),
   [KEY.SPACE]:  p => ({ ...p, y: p.y + 1 })
 };
-
-// 보드를 새롭게 선언한다.
-let board = new Board(ctx, ctxNext);
 
 document.addEventListener("keydown", event => {
   if (moves[event.keyCode]) {
