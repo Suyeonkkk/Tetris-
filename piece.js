@@ -9,12 +9,12 @@ class Piece {
 
   spawn() {
     // 랜덤 할당 후 색상, 모양 지정
-    this.typeId = Math.floor(Math.random() * (COLORS.length - 1)) + 1;
+    this.typeId = this.randomizeTetrominoType(COLORS.length - 1);
     this.color = COLORS[this.typeId];
     this.shape = SHAPES[this.typeId];
 
     // 시작점
-    this.x = this.typeId === 4 ? 4 : 3;
+    this.x = 0;
     this.y = 0;
 
     // 하드 드롭 = false
@@ -53,5 +53,10 @@ class Piece {
   // 시작 지점 set
   setStartingPosition() {
     this.x = this.typeId === 4 ? 4 : 3;
+  }
+
+  // 랜덤으로 숫자를 받는 함수이다.
+  randomizeTetrominoType(noOfTypes) {
+    return Math.floor(Math.random() * noOfTypes + 1);
   }
 }

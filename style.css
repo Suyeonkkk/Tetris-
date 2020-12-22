@@ -2,12 +2,19 @@
 
 * {
   font-family: "Press Start 2p", cursive;
-  background-color: #ffffff;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 320px 200px;
+  grid-template-columns: 350px 320px 200px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .right-column {
@@ -21,8 +28,72 @@
 }
 
 .play-button {
-  background: #4caf50;
+  background: lightgrey;
   font-size: 16px;
   padding: 15px 30px;
   cursor: pointer;
+}
+
+#pause-btn {
+  display: none;
+}
+
+.one-line {
+  float: left;
+}
+
+#reset-btn, #setting-btn {
+  width: 120px;
+  background: lightgrey;
+}
+
+.sound-item {
+  cursor: pointer;
+}
+
+#loading {
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  position: fixed;
+  display: block;
+  opacity: 0.7;
+  background-color: #fff;
+  z-index: 99;
+  text-align: center;
+}
+
+#loading-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+}
+
+#setting-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 500px;
+  background: lightgrey;
+  transform: translate(-50%, -50%);
+  display: none;
+  text-align: center;
+  padding: 10px;
+  border: solid 3px black;
+}
+
+.files {
+  width: 200px;
+  margin: 0 auto;
+}
+
+.color-box {
+  border: 1px solid black;
+  vertical-align: middle;
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
 }

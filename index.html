@@ -1,7 +1,7 @@
 <!-- 테트리스 화면을 위한 html -->
 
 <!DOCTYPE html>
-<html lang="ko" dir="ltr">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>tetris</title>
@@ -9,7 +9,18 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
+    <div id="loading">
+      <img id="loading-image" src="images/loading.gif" alt="loading...">
+    </div>
     <div class="grid">
+      <div class="left-column">
+        <h2>HIGH SCORES</h2>
+        <div id="one-line">
+          <button id="reset-btn" onclick="resetHighScore();">reset</button>
+          <button id="setting-btn" onclick="setting();">setting</button>
+        </div>
+        <ol id="highScores"></ol>
+      </div>
       <canvas id="board" class="game-board"></canvas>
       <div class="right-column">
         <div>
@@ -19,15 +30,55 @@
           <p>Level: <span id="level">0</span></p>
           <canvas id="next" class="next"></canvas>
         </div>
-        <button onclick="play()" class="play-button">Play</button>
+        <div id="sound-div">
+          <span class="sound-item" id="sound-speaker"></span>
+          <span class="sound-item" id="sound-description"></span>
+        </div>
+        <button id="play-btn" onclick="play()" class="play-button">Play</button>
+        <button id="pause-btn" onclick="pause()" class="play-button">Pause</button>
       </div>
     </div>
 
+    <div id="setting-box">
+      <h2>Setting</h2>
+      <br><br>
+      change background sound
+      <br>
+      <input type="file" class="files" id="background-sound" accept="audio/*">
+      <br><br>
+      change drop sound
+      <br>
+      <input type="file" class="files" id="drop-sound" accept="audio/*">
+      <br><br>
+      change clear sound
+      <br>
+      <input type="file" class="files" id="clear-sound" accept="audio/*">
+      <br><br>
+      change finish sound
+      <br>
+      <input type="file" class="files" id="finish-sound" accept="audio/*">
+      <br><br>
+      change color
+      <br><br>
+
+      <input type="radio" class="colors" name="color" value="lightgrey" id="c0"><label for="c0" class="color-box" style="background-color: lightgrey">.</label>
+      <input type="radio" class="colors" name="color" value="pink" id="c1"><label for="c1" class="color-box" style="background-color: pink">.</label>
+      <input type="radio" class="colors" name="color" value="cyan" id="c2"><label for="c2" class="color-box" style="background-color: cyan">.</label>
+      <input type="radio" class="colors" name="color" value="aquamarine" id="c3"><label for="c3" class="color-box" style="background-color: aquamarine">.</label>
+      <input type="radio" class="colors" name="color" value="mediumpurple" id="c4"><label for="c4" class="color-box" style="background-color: mediumpurple">.</label>
+      <input type="radio" class="colors" name="color" value="wheat" id="c5"><label for="c5" class="color-box" style="background-color: wheat">.</label>
+
+      <br><br><br><br><br>
+      <input type="button" value="apply" onclick="apply()">
+      <input type="button" value="cancel" onclick="hide()">
+    </div>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="sound.js"></script>
+    <script type="text/javascript" src="loading.js"></script>
     <script type="text/javascript" src="constants.js"></script>
     <script type="text/javascript" src="board.js"></script>
     <script type="text/javascript" src="piece.js"></script>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>
-
-<!-- 출처: https://ui.toast.com/weekly-pick/ko_20191216/ -->
